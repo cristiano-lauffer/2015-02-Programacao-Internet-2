@@ -2,50 +2,74 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <h:outputStylesheet name="./css/bootstrap.min.css"/>
-        <!--<link rel="stylesheet" href="./resources/css/bootstrap.min.css" />-->
-        <script src="./resources/js/jquery.min.js"></script>
-        <script src="./resources/js/bootstrap.min.js"></script>
+        <h:outputScript library="js" name="jquery.min.js"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>
         <h:outputStylesheet name="./css/default.css"/>
         <h:outputStylesheet name="./css/masterFooter.css"/>
         <title>#{str.titulo}<ui:insert name="title"></ui:insert></title>
+        <ui:insert name="head"></ui:insert>
     </h:head>
 
     <h:body>
 
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <h:link class="navbar-brand" value="#{str.titulo}" outcome="index" />
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">Sair</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div><!--/.nav-collapse -->
+
+            <div class="container"><h:form>
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <h:link class="navbar-brand" value="#{str.titulo}" outcome="/sistema/index" />
+                    </div>
+                    <c:choose>
+                        <c:when test="#{usuarioMB.logado}">
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu
+                                            <!--<span class="glyphicon glyphicon-cog"></span>-->
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <!--<li class="dropdown-header">Menu</li>-->
+                                            <li><a href="#">Usuarios</a></li>
+                                            <li><a href="#">Incluir marcação</a></li>
+                                            <li><a href="#">Saldo de horas</a></li>
+                                            <li><a href="#">Consulta lançamentos</a></li>
+                                            <li><a href="#">Correção de lançamentos</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><h:commandLink value="Sair" action="#{usuarioMB.realizaLogout()}" /></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div><!--/.nav-collapse -->
+                        </c:when>
+                        <c:otherwise>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><h:link value="Log In" outcome="login" /></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </h:form>
             </div>
         </nav>
 

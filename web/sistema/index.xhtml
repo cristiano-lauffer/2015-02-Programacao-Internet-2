@@ -5,11 +5,13 @@
 
     <body>
 
-        <ui:composition template="./templates/masterFooter.xhtml">
+        <ui:composition template="../templates/masterFooter.xhtml">
 
             <ui:define name="title"> - Início</ui:define>
 
-            <ui:define name="content" />
+            <ui:define name="content">
+                <p>Bem vindo #{usuarioMB.usuario.nome}</p>
+            </ui:define>
 
         </ui:composition>
 
