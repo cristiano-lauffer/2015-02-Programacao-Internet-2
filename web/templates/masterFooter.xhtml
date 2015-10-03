@@ -32,7 +32,7 @@
                         <h:link class="navbar-brand" value="#{str.titulo}" outcome="/sistema/index" />
                     </div>
                     <c:choose>
-                        <c:when test="#{usuarioMB.logado}">
+                        <c:when test="#{sessaoSistemaMB.logado}">
                             <div id="navbar" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="dropdown">
@@ -42,13 +42,16 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <!--<li class="dropdown-header">Menu</li>-->
-                                            <li><a href="#">Usuarios</a></li>
+                                            <c:if test="#{sessaoSistemaMB.usuario.administrador}" >
+                                                <li><a href="#">Usuarios</a></li>
+                                                <li role="separator" class="divider"></li>
+                                            </c:if>
                                             <li><a href="#">Incluir marcação</a></li>
                                             <li><a href="#">Saldo de horas</a></li>
                                             <li><a href="#">Consulta lançamentos</a></li>
                                             <li><a href="#">Correção de lançamentos</a></li>
                                             <li role="separator" class="divider"></li>
-                                            <li><h:commandLink value="Sair" action="#{usuarioMB.realizaLogout()}" /></li>
+                                            <li><h:commandLink value="Sair" action="#{sessaoSistemaMB.realizarLogout()}" /></li>
                                         </ul>
                                     </li>
                                 </ul>

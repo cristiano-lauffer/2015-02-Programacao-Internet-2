@@ -5,11 +5,8 @@
  */
 package filter;
 
-import bean.UsuarioMB;
+import bean.SessaoSistemaMB;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -34,8 +31,8 @@ public class FiltroAcessoSistema implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        UsuarioMB usuarioMB = (UsuarioMB) req.getSession().getAttribute("usuarioMB");
-        if (usuarioMB != null && usuarioMB.isLogado()) {
+        SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
+        if (sessaoSistemaMB != null && sessaoSistemaMB.isLogado()) {
             //encaminha para o recurso
             chain.doFilter(request, response);
         } else {

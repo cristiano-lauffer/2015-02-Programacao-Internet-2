@@ -17,12 +17,14 @@ public class Usuario {
     private String cpf;
     private String usuarioSistema;
     private String senha;
+    private boolean administrador;
 
-    public Usuario(String nome, String cpf, String usuarioSistema, String senha) {
+    public Usuario(String nome, String cpf, String usuarioSistema, String senha, boolean administrador) {
         this.nome = nome;
         this.cpf = cpf;
         this.usuarioSistema = usuarioSistema;
         this.senha = senha;
+        this.administrador = administrador;
     }
 
     public Usuario() {
@@ -59,6 +61,14 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public boolean isAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(boolean administrador) {
+        this.administrador = administrador;
+    }    
 
     @Override
     public boolean equals(Object obj) {

@@ -3,32 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean;
-
-import java.util.ArrayList;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import model.Usuario;
+package model;
 
 /**
  *
  * @author Cristiano
  */
-@ManagedBean
-@RequestScoped
-public class UsuarioMB {
+public class SessaoSistema {
 
     private Usuario usuario;
     private boolean logado;
 
-    /**
-     * Creates a new instance of UsuarioMB
-     */
-    public UsuarioMB() {
-        logado = false;
-        usuario = new Usuario();
+    public SessaoSistema(Usuario usuario, boolean logado) {
+        this.usuario = usuario;
+        this.logado = logado;
+    }
+
+    public SessaoSistema() {
+        this.usuario = null;
+        this.logado = false;
     }
 
     public Usuario getUsuario() {
@@ -41,6 +34,10 @@ public class UsuarioMB {
 
     public boolean isLogado() {
         return logado;
+    }
+
+    public void setLogado(boolean logado) {
+        this.logado = logado;
     }
 
 }
