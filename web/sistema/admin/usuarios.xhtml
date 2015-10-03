@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../../templates/masterFooter.xhtml">
+
+            <ui:define name="title"> - Usuários</ui:define>
+
+            <ui:define name="head">
+                <script>
+                    $(document).ready(function () {
+                        if ($("#mensagens").is("ul"))
+                            $("#myModal").modal();
+//                        $("a").click(function () {
+//                            //alert($(this).text());
+//                            $("#captionTeste").text($(this).text());
+//                        });
+                    });
+                </script>
+            </ui:define>
+
+            <ui:define name="content">
+                <!--<div class="col-sm-1"></div>-->
+                <h:form class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-info">
+                            <h5 class="panel-default">Usuários</h5>
+                        </div>
+                        <!--<div class="panel-body">-->
+                        <h:dataTable id="dtbUsuarios" binding="#{usuarioMB.dataTableUsuarios}" value="#{sessaoSistemaMB.listaUsuarios}" var="usuario" class="table table-condensed table-hover">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Ações" />
+                                </f:facet>
+                                <h:commandLink class="glyphicon glyphicon-edit" />
+                                <span></span>
+                                <span></span>
+                                <h:commandLink class="glyphicon glyphicon-remove-circle" action="#{usuarioMB.removerUsuario()}">
+                                    <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuario}" />
+                                </h:commandLink>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">CPF</f:facet>
+                                <h:outputText id="idCpf" value="#{usuario.cpf}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Nome</f:facet>
+                                <h:outputText id="idNome" value="#{usuario.nome}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Usuário</f:facet>
+                                <h:outputText id="idUsuarioSistema" value="#{usuario.usuarioSistema}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Administrador</f:facet>
+                                <h:selectBooleanCheckbox value="#{usuario.administrador}" disabled="true" />
+                            </h:column>
+                        </h:dataTable>
+                        <!--</div>-->
+                    </div>
+                </h:form>
+                <!--<div class="col-sm-1"></div>-->
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Erro</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h:messages id="mensagens"></h:messages>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

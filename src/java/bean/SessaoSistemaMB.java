@@ -51,7 +51,11 @@ public class SessaoSistemaMB {
         return this.sessaoSistema.isLogado();
     }
 
-    private Usuario BuscarUsuario(String usuarioSistema, String senha) {
+    public ArrayList<Usuario> getListaUsuarios() {
+        return listaUsuarios;
+    }
+
+    public Usuario BuscarUsuario(String usuarioSistema, String senha) {
         Usuario objUsuario = null;
 
         for (Usuario user : this.listaUsuarios) {
@@ -62,6 +66,19 @@ public class SessaoSistemaMB {
                 } else {
                     return null;
                 }
+            }
+        }
+
+        return objUsuario;
+    }
+
+    public Usuario BuscarUsuarioPorCpf(String cpf) {
+        Usuario objUsuario = null;
+
+        for (Usuario user : this.listaUsuarios) {
+            if (user.getCpf().equals(cpf)) {
+                objUsuario = user;
+                break;
             }
         }
 
@@ -93,7 +110,9 @@ public class SessaoSistemaMB {
 
     public String realizarLogout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return ("index?faces-redirect=true");
+        //#bug
+        //o redirecionamento estava sendo feito para a pasta corrente, não para a raiz
+        return ("/faces/login?faces-redirect=true");
     }
 
 }

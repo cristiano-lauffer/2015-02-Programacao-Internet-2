@@ -29,21 +29,21 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <h:link class="navbar-brand" value="#{str.titulo}" outcome="/sistema/index" />
+                        <h:link class="navbar-brand" value="#{str.titulo}" outcome="/index" />
                     </div>
                     <c:choose>
                         <c:when test="#{sessaoSistemaMB.logado}">
                             <div id="navbar" class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{sessaoSistemaMB.usuario.nome} - Menu
                                             <!--<span class="glyphicon glyphicon-cog"></span>-->
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu">
                                             <!--<li class="dropdown-header">Menu</li>-->
                                             <c:if test="#{sessaoSistemaMB.usuario.administrador}" >
-                                                <li><a href="#">Usuarios</a></li>
+                                                <li><h:link value="Usuarios" outcome="/sistema/admin/usuarios" /></li>
                                                 <li role="separator" class="divider"></li>
                                             </c:if>
                                             <li><a href="#">Incluir marcação</a></li>
