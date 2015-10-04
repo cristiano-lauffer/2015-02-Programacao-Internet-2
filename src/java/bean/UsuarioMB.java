@@ -56,10 +56,10 @@ public class UsuarioMB {
     public void removerUsuario() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
-        
+
         Usuario usuarioRemover = sessaoSistemaMB.BuscarUsuarioPorCpf(this.usuario.getCpf());
-        
-        if(usuarioRemover == null){
+
+        if (usuarioRemover == null) {
             FacesContext contexto = FacesContext.getCurrentInstance();
             FacesMessage mensagem = new FacesMessage(
                     FacesMessage.SEVERITY_ERROR,
@@ -78,19 +78,91 @@ public class UsuarioMB {
             contexto.addMessage("mensagemUsuarios", mensagem);
         } else {
             sessaoSistemaMB.getListaUsuarios().remove(this.usuario);
+            FacesContext contexto = FacesContext.getCurrentInstance();
+            FacesMessage mensagem = new FacesMessage(
+                    FacesMessage.SEVERITY_INFO,
+                    "Usuário removido!",
+                    "");
+            contexto.addMessage("mensagemUsuarios", mensagem);
         }
     }
 
-    public void editarUsuario() {
+    public String editarUsuario() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
 
+        Usuario objUsuario = sessaoSistemaMB.BuscarUsuarioPorCpf(this.usuario.getCpf());
+
+        Usuario objUsuarioEditar = sessaoSistemaMB.BuscarUsuarioPorId(this.usuario.getId());
+
+        //Verifica se usuário existe
+        if (objUsuarioEditar == null) {
+            FacesContext contexto = FacesContext.getCurrentInstance();
+            FacesMessage mensagem = new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR,
+                    "Não foi possível editar o usuário!",
+                    "");
+            contexto.addMessage("mensagemUsuarios", mensagem);
+            return "/faces/sistema/admin/usuarios";
+        }
+
+        //Verifica se o cpf foi cadastrado para outro usuário
+        if (objUsuario != null) {
+            if (usuario.getId() != objUsuario.getId() && usuario.getCpf().trim() == objUsuario.getCpf()) {
+                FacesContext contexto = FacesContext.getCurrentInstance();
+                FacesMessage mensagem = new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR,
+                        "Cpf cadastrado para outro usuário!",
+                        "");
+                contexto.addMessage("mensagemUsuarios", mensagem);
+                return "/faces/sistema/admin/usuario_editar";
+            }
+        }
+
+        //objeto enviado via post
+        sessaoSistemaMB.editarUsuario(this.usuario);
+
+        FacesContext contexto = FacesContext.getCurrentInstance();
+        FacesMessage mensagem = new FacesMessage(
+                FacesMessage.SEVERITY_ERROR,
+                "Usuário editado!",
+                "");
+        contexto.addMessage("mensagemUsuarios", mensagem);
+
+        //return "/faces/sistema/admin/usuarios?faces-redirect=true";
+        return "/faces/sistema/admin/usuarios";
     }
 
-    public void adicionarUsuario() {
+    public String adicionarUsuario() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
 
-        //sessaoSistemaMB.getListaUsuarios().add(this.usuario);
+        Usuario objUsuario = sessaoSistemaMB.BuscarUsuarioPorCpf(this.usuario.getCpf());
+
+        //Verifica se o cpf foi cadastrado para outro usuário
+        if (objUsuario != null) {
+            if (usuario.getId() != objUsuario.getId() && usuario.getCpf().trim() == objUsuario.getCpf()) {
+                FacesContext contexto = FacesContext.getCurrentInstance();
+                FacesMessage mensagem = new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR,
+                        "Cpf cadastrado para outro usuário!",
+                        "");
+                contexto.addMessage("mensagemUsuarios", mensagem);
+                return "/faces/sistema/admin/usuario_editar";
+            }
+        }
+
+        //objeto enviado via post
+        sessaoSistemaMB.adicionarUsuario(this.usuario);
+
+        FacesContext contexto = FacesContext.getCurrentInstance();
+        FacesMessage mensagem = new FacesMessage(
+                FacesMessage.SEVERITY_ERROR,
+                "Usuário " + this.usuario.toString() + " Cadastrado!",
+                "");
+        contexto.addMessage("mensagemUsuarios", mensagem);
+
+        //return "/faces/sistema/admin/usuarios?faces-redirect=true";
+        return "/faces/sistema/admin/usuarios";
     }
 }

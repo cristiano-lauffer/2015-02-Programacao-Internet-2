@@ -7,10 +7,11 @@
 
         <ui:composition template="../templates/masterFooter.xhtml">
 
-            <ui:define name="title"> - Início</ui:define>
+            <ui:define name="title"> - Acesso negado</ui:define>
 
             <ui:define name="content">
-                <p>Bem vindo #{sessaoSistemaMB.usuario.nome}</p>
+                <h3>Acesso negado</h3>
+                <p>#{sessaoSistemaMB.usuario.nome}, favor entrar em contato com o administrador do sistema.</p>
             </ui:define>
             
             <ui:define name="ModalTitle">Erro</ui:define>

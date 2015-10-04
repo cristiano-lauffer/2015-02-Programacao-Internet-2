@@ -30,9 +30,9 @@ public class SessaoSistemaMB {
     public SessaoSistemaMB() {
 
         listaUsuarios = new ArrayList<Usuario>();
-        listaUsuarios.add(new Usuario("Cristiano", "01040337031", "clauffer", "123", true));
-        listaUsuarios.add(new Usuario("Leonardo", "12345678912", "ldutra", "123", false));
-        listaUsuarios.add(new Usuario("Administrador", "78912345678", "admin", "12345", false));
+        listaUsuarios.add(new Usuario((new Usuario()).GenerateNewId(), "Cristiano", "01040337031", "clauffer", "123", true));
+        listaUsuarios.add(new Usuario((new Usuario()).GenerateNewId(), "Leonardo", "12345678912", "ldutra", "123", false));
+        listaUsuarios.add(new Usuario((new Usuario()).GenerateNewId(), "Administrador", "78912345678", "admin", "12345", false));
 
         sessaoSistema = new SessaoSistema();
         sessaoSistema.setUsuario(new Usuario());
@@ -85,6 +85,16 @@ public class SessaoSistemaMB {
         return objUsuario;
     }
 
+    Usuario BuscarUsuarioPorId(int id) {
+        for (Usuario user : this.listaUsuarios) {
+            if (user.getId() == id) {
+                return user;
+            }
+        }
+
+        return null;
+    }
+
     public String realizarLogin() {
         Usuario objUsuario = this.BuscarUsuario(this.sessaoSistema.getUsuario().getUsuarioSistema(), this.sessaoSistema.getUsuario().getSenha());
 
@@ -113,6 +123,25 @@ public class SessaoSistemaMB {
         //#bug
         //o redirecionamento estava sendo feito para a pasta corrente, não para a raiz
         return ("/faces/login?faces-redirect=true");
+    }
+
+    public boolean editarUsuario(Usuario usuario) {
+
+        Usuario objUsuarioEditar = this.BuscarUsuarioPorId(usuario.getId());
+
+        objUsuarioEditar.setNome(usuario.getNome());
+        objUsuarioEditar.setCpf(usuario.getCpf());
+        objUsuarioEditar.setUsuarioSistema(usuario.getUsuarioSistema());
+
+        return true;
+    }
+
+    public boolean adicionarUsuario(Usuario usuario) {
+
+        usuario.setId(usuario.GenerateNewId());
+        this.listaUsuarios.add(usuario);
+
+        return true;
     }
 
 }

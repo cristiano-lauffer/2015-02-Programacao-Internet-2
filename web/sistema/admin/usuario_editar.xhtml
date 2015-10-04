@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../../templates/masterFooter.xhtml">
+
+            <ui:define name="title"> - Usuários - Editar</ui:define>
+
+            <ui:define name="head"></ui:define>
+
+            <ui:define name="content">
+                <div class="col-sm-1"></div>
+                <h:form class="col-sm-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-default">Editar Usuário</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <h:outputLabel value="Id:" for="id" class="control-label col-sm-2" />
+                                <div class="col-sm-8">
+                                    <h:inputText id="id" value="#{usuarioMB.usuario.id}" class="form-control" disabled="true" />
+                                    <h:inputHidden id="idObj" value="#{usuarioMB.usuario.id}" />
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <h:outputLabel value="Nome:" for="nome" class="control-label col-sm-2" />
+                                <div class="col-sm-8">
+                                    <h:inputText id="nome" value="#{usuarioMB.usuario.nome}" class="form-control" pt:required="" />
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <h:outputLabel value="CPF:" for="cpf" class="control-label col-sm-2" />
+                                <div class="col-sm-8">
+                                    <h:inputText id="cpf" value="#{usuarioMB.usuario.cpf}" class="form-control" pt:required="" />
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <h:outputLabel value="Usuário:" for="usuario" class="control-label col-sm-2" />
+                                <div class="col-sm-8">
+                                    <h:inputText id="usuario" value="#{usuarioMB.usuario.usuarioSistema}" class="form-control" pt:required="" />
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <h:outputLabel value="Administrador" for="administrador" class="control-label col-sm-2" />
+                                <div class="col-sm-8">
+                                    <h:selectBooleanCheckbox id="administrador" value="#{usuarioMB.usuario.administrador}" disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer clearfix">
+                            <div class="pull-right">
+                                <h:commandLink class="btn btn-default" action="#{usuarioMB.editarUsuario()}">Editar</h:commandLink>
+                                <span></span>
+                                <h:commandLink class="btn btn-link" action="usuarios?faces-redirect=true">Cancelar</h:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <div class="col-sm-1"></div>
+            </ui:define>
+
+            <ui:define name="ModalTitle">Mensagem</ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

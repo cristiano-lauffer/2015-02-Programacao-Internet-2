@@ -16,12 +16,6 @@
                         margin: 0 auto;
                     }
                 </style>
-                <script>
-                    $(document).ready(function () {
-                        if ($("#mensagens").is("ul"))
-                            $("#myModal").modal();
-                    });
-                </script>
             </ui:define>
             <ui:define name="title"> - Login</ui:define>
 
@@ -52,26 +46,9 @@
                         </div>
                     </div>
                 </h:form>
-
-                <!-- Modal -->
-                <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Falha no Login</h4>
-                            </div>
-                            <div class="modal-body">
-                                <h:messages id="mensagens"></h:messages>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </ui:define>
+            
+            <ui:define name="ModalTitle">Falha no Log In</ui:define>
 
         </ui:composition>
 
