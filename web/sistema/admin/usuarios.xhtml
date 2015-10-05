@@ -2,10 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -29,10 +27,13 @@
                                 </button>
                                 <a class="navbar-brand" href="#">Usuários</a>
                             </div>
-                            <div class="collapse navbar-collapse" id="navMenu">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="active">
-                                        <h:commandLink class="active" value="Novo" action="usuario_novo"><span class="sr-only">(current)</span></h:commandLink>
+                            <div id="navMenu" class="collapse navbar-collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><h:commandLink value="Novo" action="usuario_novo" /></li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>
@@ -59,7 +60,7 @@
                                 <f:facet name="header">Cód.</f:facet>
                                 <h:outputText id="id" value="#{usuario.id}" />
                             </h:column>
-                            
+
                             <h:column>
                                 <f:facet name="header">CPF</f:facet>
                                 <h:outputText id="idCpf" value="#{usuario.cpf}" />
