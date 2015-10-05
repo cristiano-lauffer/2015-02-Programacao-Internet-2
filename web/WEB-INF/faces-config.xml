@@ -6,7 +6,7 @@
 
     <application>
         <resource-bundle>
-            <base-name>strings</base-name>
+            <base-name>util.strings</base-name>
             <var>str</var>
         </resource-bundle>
     </application>

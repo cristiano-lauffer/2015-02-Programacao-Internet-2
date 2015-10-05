@@ -27,7 +27,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <h:outputLabel value="E-mail:" for="idEmail" class="control-label col-sm-3" />
+                                <h:outputLabel value="Username:" for="idEmail" class="control-label col-sm-3" />
                                 <div class="col-sm-7">
                                     <h:inputText id="idUsuarioSistema" value="#{sessaoSistemaMB.usuario.usuarioSistema}" class="form-control" pt:required="" />
                                 </div>
@@ -40,7 +40,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-7 col-sm-offset-3">
-                                    <h:commandButton class="btn btn-lg btn-primary" value="Log In" action="#{sessaoSistemaMB.realizarLogin()}" />
+                                    <h:commandButton class="btn btn-lg btn-default" value="Log In" action="#{sessaoSistemaMB.realizarLogin()}" />
                                 </div>
                             </div>
                         </div>

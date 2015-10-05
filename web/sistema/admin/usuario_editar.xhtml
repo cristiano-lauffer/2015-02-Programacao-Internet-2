@@ -3,9 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <body>
 
@@ -43,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
-                                <h:outputLabel value="Usuário:" for="usuario" class="control-label col-sm-2" />
+                                <h:outputLabel value="Username" for="usuario" class="control-label col-sm-2" />
                                 <div class="col-sm-8">
                                     <h:inputText id="usuario" value="#{usuarioMB.usuario.usuarioSistema}" class="form-control" pt:required="" />
                                 </div>
@@ -52,12 +50,13 @@
                                 <h:outputLabel value="Administrador" for="administrador" class="control-label col-sm-2" />
                                 <div class="col-sm-8">
                                     <h:selectBooleanCheckbox id="administrador" value="#{usuarioMB.usuario.administrador}" disabled="true" />
+                                    <h:inputHidden id="idAdmin" value="#{usuarioMB.usuario.administrador}" />
                                 </div>
                             </div>
                         </div>
                         <div class="panel-footer clearfix">
                             <div class="pull-right">
-                                <h:commandLink class="btn btn-default" action="#{usuarioMB.editarUsuario()}">Editar</h:commandLink>
+                                <h:commandButton class="btn btn-default" action="#{usuarioMB.editarUsuario()}" value="Editar" />
                                 <span></span>
                                 <h:commandLink class="btn btn-link" action="usuarios?faces-redirect=true">Cancelar</h:commandLink>
                             </div>

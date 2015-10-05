@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
-                                <h:outputLabel value="Usuário:" for="usuario" class="control-label col-sm-2" />
+                                <h:outputLabel value="Username:" for="usuario" class="control-label col-sm-2" />
                                 <div class="col-sm-8">
                                     <h:inputText id="usuario" value="#{usuarioMB.usuario.usuarioSistema}" class="form-control" pt:required="" />
                                 </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="panel-footer clearfix">
                             <div class="pull-right">
-                                <h:commandLink class="btn btn-default" action="#{usuarioMB.adicionarUsuario()}">Cadastrar</h:commandLink>
+                                <h:commandButton class="btn btn-default" action="#{usuarioMB.inserirUsuario()}" value="Cadastrar" />
                                 <span></span>
                                 <h:commandLink class="btn btn-link" action="usuarios?faces-redirect=true">Cancelar</h:commandLink>
                             </div>

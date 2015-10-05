@@ -30,7 +30,7 @@
                                 <a class="navbar-brand" href="#">Usuários</a>
                             </div>
                             <div class="collapse navbar-collapse" id="navMenu">
-                                <ul class="nav navbar-nav">
+                                <ul class="nav navbar-nav navbar-right">
                                     <li class="active">
                                         <h:commandLink class="active" value="Novo" action="usuario_novo"><span class="sr-only">(current)</span></h:commandLink>
                                     </li>
@@ -40,7 +40,7 @@
                     </nav>
                     <div class="panel panel-default">
                         <!--<div class="panel-body">-->
-                        <h:dataTable id="dtbUsuarios" binding="#{usuarioMB.dataTableUsuarios}" value="#{sessaoSistemaMB.listaUsuarios}" var="usuario" class="table table-condensed table-hover">
+                        <h:dataTable id="dtbUsuarios" binding="#{usuarioMB.dataTableUsuarios}" value="#{usuarioMB.arrayListUsuarios}" var="usuario" class="table table-condensed table-hover">
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="Ações" />
@@ -71,7 +71,7 @@
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Usuário</f:facet>
+                                <f:facet name="header">Username</f:facet>
                                 <h:outputText id="idUsuarioSistema" value="#{usuario.usuarioSistema}" />
                             </h:column>
 
