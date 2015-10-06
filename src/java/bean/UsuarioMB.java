@@ -5,13 +5,17 @@
  */
 package bean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import model.MarcacaoHorario;
+import model.TipoMarcacao;
 import model.Usuario;
 
 /**
@@ -209,5 +213,30 @@ public class UsuarioMB {
 
         //return "/faces/sistema/admin/usuarios?faces-redirect=true";
         return "/faces/sistema/admin/usuarios";
+    }
+
+    public String incluirRegistroUsuarioAtual() {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
+
+        Date dataRegistro = new Date();
+
+        if ((new dao.MarcacaoDao().inserir(new MarcacaoHorario(dataRegistro, TipoMarcacao.MARCACAO_WEB, null, sessaoSistemaMB.getUsuario())))) {
+            //Incluiu o registro
+            util.Util.FacesContextAddMessage(
+                    FacesMessage.SEVERITY_INFO,
+                    "Marcação efetuada [" + (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(dataRegistro)) + "].",
+                    "",
+                    "mensagemUsuarios");
+            return "/faces/sistema/index";
+        } else {
+            //Não incluiu o registro
+            util.Util.FacesContextAddMessage(
+                    FacesMessage.SEVERITY_ERROR,
+                    "Não foi possível incluir a marcação!",
+                    "",
+                    "mensagemUsuarios");
+            return "/faces/sistema/index";
+        }
     }
 }

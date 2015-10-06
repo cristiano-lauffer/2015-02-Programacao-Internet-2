@@ -53,7 +53,7 @@
                                                 <li><h:link value="Usuarios" outcome="/sistema/admin/usuarios" /></li>
                                                 <li role="separator" class="divider"></li>
                                             </c:if>
-                                            <li><a href="#">Incluir marcação</a></li>
+                                            <li><h:commandLink value="Incluir marcação" action="#{usuarioMB.incluirRegistroUsuarioAtual()}" /></li>
                                             <li><a href="#">Saldo de horas</a></li>
                                             <li><a href="#">Consulta lançamentos</a></li>
                                             <li><a href="#">Correção de lançamentos</a></li>
