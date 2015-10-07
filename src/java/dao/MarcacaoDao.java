@@ -36,7 +36,7 @@ public class MarcacaoDao {
 
     public boolean inserir(MarcacaoHorario marcacaoHorario) {
         try {
-            String sql = "INSERT INTO marcacoes_horarios (dt_registro, id_tipo_registro, id_usuario) VALUES (?,?,?)";
+            String sql = "INSERT INTO marcacoes_horarios (dt_marcacao, id_tipo_marcacao, id_usuario) VALUES (?,?,?)";
             conectar(sql);
             comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             comando.setObject(1, marcacaoHorario.getDtMarcacao(), Types.TIMESTAMP);

@@ -60,3 +60,40 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+--DROP FUNCTION INSERIR_PERIODO_MARCACAO(dt_inicio DATE, dt_fim DATE, id_usuario INT, id_tipo_marcacao INT);
+
+--SELECT INSERIR_PERIODO_MARCACAO(CAST('2015-08-01' AS DATE), CAST('2015-10-06' AS DATE), 1, 4);
+
+CREATE OR REPLACE FUNCTION INSERIR_PERIODO_MARCACAO(
+	dt_inicio DATE,
+	dt_fim DATE,
+	id_usuario INT,
+	id_tipo_marcacao INT
+) RETURNS VOID AS $$
+DECLARE
+	dt_dia_semana INT;
+BEGIN
+	WHILE dt_inicio <= dt_fim LOOP
+
+		dt_dia_semana := EXTRACT(DOW FROM dt_inicio);
+
+		--Se não for sábado nem domingo
+		if dt_dia_semana <> 0 AND dt_dia_semana <> 6 THEN
+
+			--Marcação de entrada
+			INSERT INTO marcacoes_horarios (dt_marcacao, id_tipo_marcacao, id_usuario)
+				VALUES (CAST(dt_inicio AS TIMESTAMP) + interval '8 hours', id_tipo_marcacao, id_usuario);
+		
+			--Marcação de saída
+			INSERT INTO marcacoes_horarios (dt_marcacao, id_tipo_marcacao, id_usuario)
+				VALUES (CAST(dt_inicio AS TIMESTAMP) + interval '18 hours', id_tipo_marcacao, id_usuario);
+		END IF;
+
+		dt_inicio := dt_inicio + interval '1 day';
+	END LOOP;
+
+	RETURN;
+END;
+$$
+LANGUAGE PLPGSQL;
+

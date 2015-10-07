@@ -13,7 +13,8 @@ public enum TipoMarcacao {
 
     MARCACAO_PONTO (1),
     MARCACAO_WEB (2),
-    MARCACAO_EDICAO (3);
+    MARCACAO_EDICAO (3),
+    MARCACAO_FERIAS (4);
     private int tipoMarcacao;
     
     TipoMarcacao(int tipoMarcacao){

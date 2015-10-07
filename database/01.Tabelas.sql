@@ -25,19 +25,19 @@ CREATE TABLE usuarios (
 
 CREATE TABLE tipos_marcacoes_horarios (
 	id serial NOT NULL,
-	tipo_registro character varying(100) NOT NULL,
+	tipo_marcacao character varying(100) NOT NULL,
 	CONSTRAINT pk_tipos_marcacoes_horarios PRIMARY KEY (id)
 );
 
 --DROP TABLE marcacoes_horarios;
 
 CREATE TABLE marcacoes_horarios (
-	dt_registro timestamp without time zone NOT NULL,
-	id_tipo_registro int NOT NULL,
+	dt_marcacao timestamp without time zone NOT NULL,
+	id_tipo_marcacao int NOT NULL,
 	dt_alteracao timestamp without time zone NULL,
 	id_usuario int NOT NULL,
-	CONSTRAINT pk_marcacoes_horarios PRIMARY KEY (dt_registro),
-	CONSTRAINT fk_tipos_marcacoes_horarios FOREIGN KEY (id_tipo_registro) REFERENCES tipos_marcacoes_horarios (id),
+	CONSTRAINT pk_marcacoes_horarios PRIMARY KEY (dt_marcacao),
+	CONSTRAINT fk_tipos_marcacoes_horarios FOREIGN KEY (id_tipo_marcacao) REFERENCES tipos_marcacoes_horarios (id),
 	CONSTRAINT fk_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios (id)
 );
 
