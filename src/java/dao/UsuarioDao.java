@@ -41,8 +41,9 @@ public class UsuarioDao {
      * @param usuarioSistema
      * @param senha
      * @return
+     * @throws java.lang.Exception
      */
-    public Usuario buscar(String usuarioSistema, String senha) {
+    public Usuario buscar(String usuarioSistema, String senha) throws Exception {
         Usuario usuarioRetorno = null;
 
         try {
@@ -67,10 +68,11 @@ public class UsuarioDao {
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return usuarioRetorno;
     }
 
     /**
@@ -80,8 +82,9 @@ public class UsuarioDao {
      * @param cpf
      * @param id
      * @return
+     * @throws java.lang.Exception
      */
-    public Usuario buscarPorCpf(String cpf, int id) {
+    public Usuario buscarPorCpf(String cpf, int id) throws Exception {
         Usuario usuarioRetorno = null;
 
         try {
@@ -106,20 +109,23 @@ public class UsuarioDao {
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return usuarioRetorno;
     }
 
-    
-    /***
+    /**
+     * *
      * Busca um usuário por Nome, ignorando o ID passado
+     *
      * @param nome
      * @param id
-     * @return 
+     * @return
+     * @throws java.lang.Exception
      */
-    public Usuario buscarPorNome(String nome, int id) {
+    public Usuario buscarPorNome(String nome, int id) throws Exception {
         Usuario usuarioRetorno = null;
 
         try {
@@ -144,19 +150,23 @@ public class UsuarioDao {
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return usuarioRetorno;
     }
-    
-    /***
+
+    /**
+     * *
      * Busca um usuário por Usuário do sistema, ignorando o ID passado
+     *
      * @param usuarioSistema
      * @param id
-     * @return 
+     * @return
+     * @throws java.lang.Exception
      */
-    public Usuario buscarPorUsuarioSistema(String usuarioSistema, int id) {
+    public Usuario buscarPorUsuarioSistema(String usuarioSistema, int id) throws Exception {
         Usuario usuarioRetorno = null;
 
         try {
@@ -181,13 +191,19 @@ public class UsuarioDao {
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return usuarioRetorno;
     }
 
-    public ArrayList<Usuario> getArrayListUsuarios() {
+    /***
+     * 
+     * @return
+     * @throws Exception 
+     */
+    public ArrayList<Usuario> getArrayListUsuarios() throws Exception {
         ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 
         try {
@@ -211,13 +227,20 @@ public class UsuarioDao {
             return listaUsuarios;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return listaUsuarios;
     }
 
-    public boolean inserir(Usuario usuario) {
+    /***
+     * 
+     * @param usuario
+     * @return
+     * @throws Exception 
+     */
+    public boolean inserir(Usuario usuario) throws Exception {
         try {
             String sql = "INSERT INTO usuarios (nome, cpf, usuarioSistema, senha, administrador) VALUES(?,?,?,?,?)";
             conectar(sql);
@@ -237,13 +260,20 @@ public class UsuarioDao {
             return true;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return false;
     }
 
-    public boolean editar(Usuario usuario) {
+    /***
+     * 
+     * @param usuario
+     * @return
+     * @throws Exception 
+     */
+    public boolean editar(Usuario usuario) throws Exception {
         try {
             String sql = "UPDATE usuarios SET nome=?, cpf=?, usuarioSistema=?, administrador=? WHERE id=?";
             conectar(sql);
@@ -258,10 +288,11 @@ public class UsuarioDao {
             return true;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return false;
     }
 
     /**
@@ -269,8 +300,9 @@ public class UsuarioDao {
      *
      * @param usuario
      * @return -1 se não foi possível excluir o usuário
+     * @throws java.lang.Exception
      */
-    public int excluir(Usuario usuario) {
+    public int excluir(Usuario usuario) throws Exception {
         try {
             String sql = "DELETE FROM usuarios WHERE id=?";
             conectar(sql);
@@ -282,11 +314,11 @@ public class UsuarioDao {
             return intAfectedRows;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-
-        return -1;
     }
 
 }

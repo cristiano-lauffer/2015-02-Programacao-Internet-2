@@ -95,7 +95,12 @@
                             <h4 class="modal-title"><ui:insert name="ModalTitle"></ui:insert></h4>
                         </div>
                         <div class="modal-body">
-                            <h:messages id="mensagens"></h:messages>
+                            <h:messages id="mensagens" errorClass="alert-danger" infoClass="alert alert-info" warnClass="alert alert-warning"></h:messages>
+<!--                            <div class="alert alert-warning" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                Enter a valid email address
+                            </div>-->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>

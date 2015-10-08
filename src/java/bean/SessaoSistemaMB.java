@@ -58,7 +58,7 @@ public class SessaoSistemaMB {
                 return "/faces/sistema/index?faces-redirect=true";
             } else {
                 util.Util.FacesContextAddMessage(
-                        FacesMessage.SEVERITY_ERROR,
+                        FacesMessage.SEVERITY_WARN,
                         "Login Inválido!",
                         "Usuário e/ou senha estão errados! Digite sua senha novamente!",
                         "mensagemLogin"
