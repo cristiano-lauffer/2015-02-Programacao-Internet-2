@@ -69,8 +69,8 @@ public class SessaoSistemaMB {
         } catch (Exception e) {
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "Erro: " + e.getMessage(),
-                    "",
+                    "Falha no login. Favor entrar em contato com o administrador do sistema.",
+                    e.getMessage(),
                     "mensagemLogin"
             );
             return "login";

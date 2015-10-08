@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <body>
 
@@ -46,12 +47,12 @@
                                 <f:facet name="header">
                                     <h:outputText value="Ações" />
                                 </f:facet>
-                                <h:commandLink class="glyphicon glyphicon-edit" action="usuario_editar">
+                                <h:commandLink class="glyphicon glyphicon-edit" action="usuario_editar" pt:data-toggle="tooltip" pt:data-placement="right" title="Editar">
                                     <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuario}" />
                                 </h:commandLink>
                                 <span></span>
                                 <span></span>
-                                <h:commandLink class="glyphicon glyphicon-remove-circle" action="#{usuarioMB.removerUsuario()}">
+                                <h:commandLink class="glyphicon glyphicon-remove-circle" action="#{usuarioMB.removerUsuario()}" pt:data-toggle="tooltip" pt:data-placement="right" pt:title="Excluir">
                                     <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuario}" />
                                 </h:commandLink>
                             </h:column>

@@ -84,8 +84,8 @@ public class UsuarioMB {
         } catch (Exception e) {
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "Não foi possível excluir o usuário: " + e.getMessage(),
-                    "",
+                    "Não foi possível excluir o usuário.",
+                    e.getMessage(),
                     "mensagemUsuarios");
         }
     }
@@ -158,8 +158,8 @@ public class UsuarioMB {
         } catch (Exception e) {
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "Não foi possível editar o usuário: " + e.getMessage(),
-                    "",
+                    "Não foi possível editar o usuário.",
+                    e.getMessage(),
                     "mensagemUsuarios");
             return "/faces/sistema/admin/usuario_editar";
         }
@@ -234,8 +234,8 @@ public class UsuarioMB {
         } catch (Exception e) {
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "Não foi possível editar o usuário: " + e.getMessage(),
-                    "",
+                    "Não foi possível editar o usuário.",
+                    e.getMessage(),
                     "mensagemUsuarios");
             return "/faces/sistema/admin/usuario_novo";
         }
@@ -268,8 +268,8 @@ public class UsuarioMB {
         } catch (Exception e) {
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "Não foi possível efetuar a marcação: " + e.getMessage(),
-                    "",
+                    "Não foi possível efetuar a marcação.",
+                    e.getMessage(),
                     "mensagemUsuarios");
             return "/faces/sistema/index";
         }
