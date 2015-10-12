@@ -41,3 +41,11 @@ CREATE TABLE marcacoes_horarios (
 	CONSTRAINT fk_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios (id)
 );
 
+--DROP TABLE cargos;
+
+CREATE TABLE cargos (
+	id serial NOT NULL,
+	nome_cargo character varying(100) NOT NULL,
+	CONSTRAINT pk_cargos PRIMARY KEY (id)
+);
+

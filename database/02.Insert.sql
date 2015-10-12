@@ -17,3 +17,9 @@ INSERT INTO tipos_marcacoes_horarios (tipo_marcacao) VALUES
 	('Marcação Web'),
 	('Edição'),
 	('Férias');
+
+--TRUNCATE TABLE cargos;
+INSERT INTO cargos (nome_cargo) VALUES
+	('Programador'),
+	('Analista BI'),
+	('Outros');

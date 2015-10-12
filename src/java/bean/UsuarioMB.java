@@ -234,7 +234,7 @@ public class UsuarioMB {
         } catch (Exception e) {
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "Não foi possível editar o usuário.",
+                    "Não foi possível inserir o usuário.",
                     e.getMessage(),
                     "mensagemUsuarios");
             return "/faces/sistema/admin/usuario_novo";

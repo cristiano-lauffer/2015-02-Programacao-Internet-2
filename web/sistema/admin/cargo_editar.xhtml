@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../../templates/masterFooter.xhtml">
+
+            <ui:define name="title"> - Cargos - Editar</ui:define>
+
+            <ui:define name="head"></ui:define>
+
+            <ui:define name="content">
+                <div class="col-sm-1"></div>
+                <h:form class="col-sm-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-default">Editar Cargo</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="Id" for="id" />
+                                    <h:inputText id="id" value="#{cargoMB.cargo.id}" class="form-control" disabled="true" />
+                                    <h:inputHidden id="idObj" value="#{cargoMB.cargo.id}" />
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="Nome do cargo" for="nome_cargo" />
+                                    <h:inputText id="nome_cargo" value="#{cargoMB.cargo.nomeCargo}" class="form-control" pt:required="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer clearfix">
+                            <div class="pull-right">
+                                <h:commandButton class="btn btn-default" action="#{cargoMB.editar()}" value="Editar" />
+                                <span></span>
+                                <h:commandLink class="btn btn-link" action="cargos?faces-redirect=true">Cancelar</h:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <div class="col-sm-1"></div>
+            </ui:define>
+
+            <ui:define name="ModalTitle">Mensagem</ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

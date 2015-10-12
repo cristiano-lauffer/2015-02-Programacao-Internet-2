@@ -56,6 +56,7 @@
                                             <!--<li class="dropdown-header">Menu</li>-->
                                             <c:if test="#{sessaoSistemaMB.usuario.administrador}" >
                                                 <li><h:link value="Usuarios" outcome="/sistema/admin/usuarios" /></li>
+                                                <li><h:link value="Cargos" outcome="/sistema/admin/cargos" /></li>
                                                 <li role="separator" class="divider"></li>
                                             </c:if>
                                             <li><h:commandLink value="Incluir marcação" action="#{usuarioMB.incluirRegistroUsuarioAtual()}" /></li>
