@@ -217,7 +217,8 @@ public class UsuarioDao {
                         resultado.getString("cpf"),
                         resultado.getString("usuariosistema"),
                         resultado.getString("senha"),
-                        resultado.getBoolean("administrador")
+                        resultado.getBoolean("administrador"),
+                        (new CargoDao().buscar(resultado.getInt("id_cargo")))
                 );
 
                 listaUsuarios.add(usuario);

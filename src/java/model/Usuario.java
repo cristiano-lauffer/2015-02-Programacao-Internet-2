@@ -20,6 +20,7 @@ public class Usuario {
     private String usuarioSistema;
     private String senha;
     private boolean administrador;
+    private Cargo cargo;
 
     public Usuario(int id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador) {
         this.id = id;
@@ -28,6 +29,16 @@ public class Usuario {
         this.usuarioSistema = usuarioSistema;
         this.senha = senha;
         this.administrador = administrador;
+    }
+    
+    public Usuario(int id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador, Cargo cargo) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.usuarioSistema = usuarioSistema;
+        this.senha = senha;
+        this.administrador = administrador;
+        this.cargo = cargo;
     }
 
     public Usuario() {
@@ -79,6 +90,14 @@ public class Usuario {
 
     public void setAdministrador(boolean administrador) {
         this.administrador = administrador;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 
     @Override

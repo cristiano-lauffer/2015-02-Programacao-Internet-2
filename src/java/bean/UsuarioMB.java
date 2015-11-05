@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import model.MarcacaoHorario;
@@ -29,6 +30,7 @@ public class UsuarioMB {
     private Usuario usuario;
     private boolean logado;
     private HtmlDataTable dataTableUsuarios;
+    private HtmlSelectOneMenu selectOneMenuCargos;
 
     /**
      * Creates a new instance of UsuarioMB
@@ -60,6 +62,14 @@ public class UsuarioMB {
 
     public ArrayList<Usuario> getArrayListUsuarios() throws Exception {
         return (new dao.UsuarioDao()).getArrayListUsuarios();
+    }
+
+    public HtmlSelectOneMenu getSelectOneMenuCargos() {
+        return selectOneMenuCargos;
+    }
+
+    public void setSelectOneMenuCargos(HtmlSelectOneMenu selectOneMenuCargos) {
+        this.selectOneMenuCargos = selectOneMenuCargos;
     }
 
     public void removerUsuario() {

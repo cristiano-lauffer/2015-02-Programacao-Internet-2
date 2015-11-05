@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import model.Cargo;
 
 /**
@@ -22,6 +23,7 @@ public class CargoMB {
 
     private Cargo cargo;
     private HtmlDataTable dataTableCargos;
+    private HtmlSelectOneMenu selectOneMenuCargos;
 
     /**
      * Creates a new instance of CatgoMB
@@ -44,6 +46,14 @@ public class CargoMB {
 
     public void setDataTableCargos(HtmlDataTable dataTableCargos) {
         this.dataTableCargos = dataTableCargos;
+    }
+    
+    public HtmlSelectOneMenu getSelectOneMenuCargos() {
+        return selectOneMenuCargos;
+    }
+
+    public void setSelectOneMenuCargos(HtmlSelectOneMenu selectOneMenuCargos) {
+        this.selectOneMenuCargos = selectOneMenuCargos;
     }
 
     public ArrayList<Cargo> getArrayList() throws Exception {

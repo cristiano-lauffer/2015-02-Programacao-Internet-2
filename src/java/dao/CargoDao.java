@@ -183,4 +183,31 @@ public class CargoDao {
             throw new Exception(ex);
         }
     }
+    
+    public Cargo buscar(int id) throws Exception {
+        Cargo cargo = null;
+
+        try {
+            String sql = "SELECT * FROM cargos WHERE id=?";
+            conectar(sql);
+            comando.setInt(1, id);
+            ResultSet resultado = comando.executeQuery();
+            if (resultado.next()) {
+                cargo = new Cargo(
+                        resultado.getInt("id"),
+                        resultado.getString("nome_cargo")
+                );
+            }
+            fecharConexao();
+
+            return cargo;
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
+    }
 }

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -22,27 +23,27 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group col-sm-10 col-sm-offset-2">
-                                <h:outputLabel value="Id:" for="id" class="control-label col-sm-2" />
-                                <div class="col-sm-8">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="Id" for="id" class="control-label" />
                                     <h:inputText id="id" value="#{usuarioMB.usuario.id}" class="form-control" disabled="true" />
                                     <h:inputHidden id="idObj" value="#{usuarioMB.usuario.id}" />
                                 </div>
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
-                                <h:outputLabel value="Nome:" for="nome" class="control-label col-sm-2" />
-                                <div class="col-sm-8">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="Nome" for="nome" class="control-label" />
                                     <h:inputText id="nome" value="#{usuarioMB.usuario.nome}" class="form-control" pt:required="" />
                                 </div>
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
-                                <h:outputLabel value="CPF:" for="cpf" class="control-label col-sm-2" />
-                                <div class="col-sm-8">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="CPF" for="cpf" class="control-label" />
                                     <h:inputText id="cpf" value="#{usuarioMB.usuario.cpf}" class="form-control" pt:required="" />
                                 </div>
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
-                                <h:outputLabel value="Username" for="usuario" class="control-label col-sm-2" />
-                                <div class="col-sm-8">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="Username" for="usuario" class="control-label" />
                                     <h:inputText id="usuario" value="#{usuarioMB.usuario.usuarioSistema}" class="form-control" pt:required="" />
                                 </div>
                             </div>
@@ -51,6 +52,15 @@
                                 <div class="col-sm-8">
                                     <h:selectBooleanCheckbox id="administrador" value="#{usuarioMB.usuario.administrador}" disabled="true" />
                                     <h:inputHidden id="idAdmin" value="#{usuarioMB.usuario.administrador}" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-2">
+                                <div class="col-sm-9">
+                                    <h:outputLabel value="Cargo" for="cargo" class="control-label" />
+                                    <h:selectOneMenu class="form-control" binding="#{usuarioMB.selectOneMenuCargos}" value="usuario.getCargo">
+                                        <f:selectItems value="#{cargoMB.arrayList}" itemLabel="#{cargoMB.cargo.nomeCargo}" itemValue="#{cargoMB.cargo.id}" var="cargo" />
+                                    </h:selectOneMenu>
                                 </div>
                             </div>
                         </div>
