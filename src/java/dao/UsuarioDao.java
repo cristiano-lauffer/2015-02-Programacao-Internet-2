@@ -287,6 +287,7 @@ public class UsuarioDao {
             comando.setInt(5, usuario.getCargo().getId());
             comando.setInt(6, usuario.getId());
             comando.executeUpdate();
+            fecharConexao();
 
             return true;
         } catch (ClassNotFoundException ex) {

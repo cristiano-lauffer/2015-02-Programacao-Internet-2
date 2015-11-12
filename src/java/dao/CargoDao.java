@@ -98,7 +98,8 @@ public class CargoDao {
             comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             comando.setString(1, cargo.getNomeCargo());
             comando.setInt(2, cargo.getId());
-            comando.executeUpdate();
+            comando.executeUpdate();            
+            fecharConexao();
 
             return true;
         } catch (ClassNotFoundException ex) {
