@@ -81,6 +81,10 @@
                                 <f:facet name="header">Administrador</f:facet>
                                 <h:selectBooleanCheckbox value="#{usuario.administrador}" disabled="true" />
                             </h:column>
+                            <h:column>
+                                <f:facet name="header">Cargo</f:facet>
+                                <h:outputText id="idCargo" value="#{usuario.cargo.nomeCargo}" />
+                            </h:column>
                         </h:dataTable>
                         <!--</div>-->
                     </div>

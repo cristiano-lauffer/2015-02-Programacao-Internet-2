@@ -54,6 +54,7 @@ public class Cargo {
 
     @Override
     public String toString() {
-        return id + " - " + nomeCargo;
+        //return id + " - " + nomeCargo;
+        return nomeCargo;
     }
 }

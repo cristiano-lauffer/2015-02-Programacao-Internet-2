@@ -58,8 +58,8 @@
                             <div class="form-group col-sm-10 col-sm-offset-2">
                                 <div class="col-sm-9">
                                     <h:outputLabel value="Cargo" for="cargo" class="control-label" />
-                                    <h:selectOneMenu class="form-control" binding="#{usuarioMB.selectOneMenuCargos}" value="usuario.getCargo">
-                                        <f:selectItems value="#{cargoMB.arrayList}" itemLabel="#{cargoMB.cargo.nomeCargo}" itemValue="#{cargoMB.cargo.id}" var="cargo" />
+                                    <h:selectOneMenu class="form-control" value="#{usuarioMB.usuario.cargo}" converter="cargoConverter">
+                                        <f:selectItems value="#{cargoMB.arrayList}" />
                                     </h:selectOneMenu>
                                 </div>
                             </div>
