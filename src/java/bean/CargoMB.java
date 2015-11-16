@@ -5,7 +5,7 @@
  */
 package bean;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -56,13 +56,13 @@ public class CargoMB {
         this.selectOneMenuCargos = selectOneMenuCargos;
     }
 
-    public ArrayList<Cargo> getArrayList() throws Exception {
+    public List<Cargo> getArrayList() throws Exception {
         return (new dao.CargoDao()).getArrayListCargos();
     }
 
     public void remover() {
         try {
-            int intRetorno = (new dao.CargoDao()).excluir(this.cargo);
+            boolean blnRetorno = (new dao.CargoDao()).remover(this.cargo);
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_INFO,
                     "Cargo removido!",
@@ -96,7 +96,7 @@ public class CargoMB {
             }
 
             //objeto enviado via post
-            (new dao.CargoDao()).editar(cargo);
+            (new dao.CargoDao()).salvar(cargo);
 
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_INFO,
@@ -134,7 +134,7 @@ public class CargoMB {
             }
 
             //objeto enviado via post
-            (new dao.CargoDao()).inserir(cargo);
+            (new dao.CargoDao()).salvar(cargo);
 
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_INFO,

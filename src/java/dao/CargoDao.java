@@ -5,15 +5,13 @@
  */
 package dao;
 
-import banco.ConnectionFactory;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cargo;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import util.JpaUtil;
 
 /**
  *
@@ -21,111 +19,51 @@ import model.Cargo;
  */
 public class CargoDao {
 
-    private Connection conexao;
-    private PreparedStatement comando;
-
-    private void conectar(String sql) throws ClassNotFoundException, SQLException {
-        conexao = ConnectionFactory.getConnection();
-        comando = conexao.prepareStatement(sql);
-    }
-
-    private void fecharConexao() throws SQLException {
-        comando.close();
-        conexao.close();
-    }
-
-    public ArrayList<Cargo> getArrayListCargos() throws Exception {
-        ArrayList<Cargo> listaUsuarios = new ArrayList<Cargo>();
-
+    public boolean salvar(Cargo cargo) throws Exception {
         try {
-            String sql = "SELECT * FROM cargos ORDER BY 1 ASC";
-            conectar(sql);
-            ResultSet resultado = comando.executeQuery();
-            while (resultado.next()) {
-                Cargo usuario = new Cargo(
-                        resultado.getInt("id"),
-                        resultado.getString("nome_cargo")
-                );
-
-                listaUsuarios.add(usuario);
+            EntityManager em = JpaUtil.getEntityManager();
+            em.getTransaction().begin();
+            if (cargo.getId() == null) {
+                em.persist(cargo);
+            } else {
+                em.merge(cargo);
             }
-            fecharConexao();
-
-            return listaUsuarios;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        }
-    }
-
-    /**
-     * *
-     *
-     * @param cargo
-     * @return
-     * @throws Exception
-     */
-    public boolean inserir(Cargo cargo) throws Exception {
-        try {
-            String sql = "INSERT INTO cargos (nome_cargo) VALUES(?)";
-            conectar(sql);
-            comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            comando.setString(1, cargo.getNomeCargo());
-            comando.executeUpdate();
-            ResultSet resultado = comando.getGeneratedKeys();
-            if (resultado.next()) {
-                cargo.setId(resultado.getInt(1));
-            }
-            fecharConexao();
+            em.getTransaction().commit();
+            em.close();
 
             return true;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }
-    
-    public boolean editar(Cargo cargo) throws Exception {
+
+    public boolean remover(Cargo cargo) throws Exception {
         try {
-            String sql = "UPDATE cargos SET nome_cargo=? WHERE id=?";
-            conectar(sql);
-            comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            comando.setString(1, cargo.getNomeCargo());
-            comando.setInt(2, cargo.getId());
-            comando.executeUpdate();            
-            fecharConexao();
+            EntityManager em = JpaUtil.getEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(cargo));
+            em.getTransaction().commit();
+            em.close();
 
             return true;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }
-    
-    public int excluir(Cargo cargo) throws Exception {
-        try {
-            String sql = "DELETE FROM cargos WHERE id=?";
-            conectar(sql);
-            comando.setInt(1, cargo.getId());
-            comando.executeUpdate();
-            int intAfectedRows = comando.getUpdateCount();
-            fecharConexao();
 
-            return intAfectedRows;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+    public List<Cargo> getArrayListCargos() throws Exception {
+        List<Cargo> listaCargos;
+
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            listaCargos = em.createQuery("SELECT c FROM Cargo c").getResultList();
+            em.close();
+
+            return listaCargos;
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }
@@ -134,80 +72,68 @@ public class CargoDao {
         Cargo cargo = null;
 
         try {
-            String sql = "SELECT * FROM cargos WHERE nome_cargo=?";
-            conectar(sql);
-            comando.setString(1, nomeCargo);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                cargo = new Cargo(
-                        resultado.getInt("id"),
-                        resultado.getString("nome_cargo")
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT c FROM Cargo c "
+                    + "WHERE UPPER(c.nome) LIKE :nomeCargo "
+                    + "ORDER BY c.nome");
+            query.setParameter("nomeCargo", nomeCargo.toUpperCase());
+            List<Cargo> listaCargo = query.getResultList();
+
+            for (Cargo cargoRes : listaCargo) {
+                cargo = cargoRes;
+                break;
             }
-            fecharConexao();
+
+            em.close();
 
             return cargo;
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }
 
-    public Cargo buscar(String nomeCargo, int id) throws Exception {
+    public Cargo buscar(String nomeCargo, Long id) throws Exception {
         Cargo cargo = null;
 
         try {
-            String sql = "SELECT * FROM cargos WHERE nome_cargo=? AND id<> ?";
-            conectar(sql);
-            comando.setString(1, nomeCargo);
-            comando.setInt(2, id);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                cargo = new Cargo(
-                        resultado.getInt("id"),
-                        resultado.getString("nome_cargo")
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT c FROM Cargo c "
+                    + "WHERE UPPER(c.nome) LIKE :nomeCargo "
+                    + "AND c.id <> :id "
+                    + "ORDER BY c.nome");
+            query.setParameter("nomeCargo", nomeCargo.toUpperCase());
+            query.setParameter("id", id);
+            List<Cargo> listaCargo = query.getResultList();
+
+            for (Cargo cargoRes : listaCargo) {
+                cargo = cargoRes;
+                break;
             }
-            fecharConexao();
+
+            em.close();
 
             return cargo;
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }
-    
+
     public Cargo buscar(int id) throws Exception {
-        Cargo cargo = null;
+        Cargo cargo;
 
         try {
-            String sql = "SELECT * FROM cargos WHERE id=?";
-            conectar(sql);
-            comando.setInt(1, id);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                cargo = new Cargo(
-                        resultado.getInt("id"),
-                        resultado.getString("nome_cargo")
-                );
-            }
-            fecharConexao();
+            EntityManager em = JpaUtil.getEntityManager();
+            cargo = em.find(Cargo.class, id);
+            em.close();
 
             return cargo;
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }

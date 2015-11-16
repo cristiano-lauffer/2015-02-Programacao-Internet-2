@@ -251,7 +251,7 @@ public class UsuarioDao {
             comando.setString(3, usuario.getUsuarioSistema());
             comando.setString(4, usuario.getSenha());
             comando.setBoolean(5, usuario.isAdministrador());
-            comando.setInt(6, usuario.getCargo().getId());
+            comando.setLong(6, usuario.getCargo().getId());
             comando.executeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
@@ -284,7 +284,7 @@ public class UsuarioDao {
             comando.setString(2, usuario.getCpf());
             comando.setString(3, usuario.getUsuarioSistema());
             comando.setBoolean(4, usuario.isAdministrador());
-            comando.setInt(5, usuario.getCargo().getId());
+            comando.setLong(5, usuario.getCargo().getId());
             comando.setInt(6, usuario.getId());
             comando.executeUpdate();
             fecharConexao();
