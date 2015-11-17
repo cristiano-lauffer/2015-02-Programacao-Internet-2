@@ -5,24 +5,40 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author Cristiano
  */
-public class Usuario {
+@Entity
+public class Usuario implements Serializable {
 
-    private static int idGenerated = 0;
-    private int id;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(length = 100, nullable = false)
     private String nome;
+    @Column(length = 11, nullable = false)
     private String cpf;
+    @Column(length = 100, nullable = false)
     private String usuarioSistema;
+    @Column(length = 100, nullable = false)
     private String senha;
+    @Column(nullable = false)
     private boolean administrador;
+    @ManyToOne(optional = false)
     private Cargo cargo;
 
-    public Usuario(int id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador) {
+    public Usuario(Long id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -30,8 +46,8 @@ public class Usuario {
         this.senha = senha;
         this.administrador = administrador;
     }
-    
-    public Usuario(int id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador, Cargo cargo) {
+
+    public Usuario(Long id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador, Cargo cargo) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -44,11 +60,11 @@ public class Usuario {
     public Usuario() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -93,11 +109,18 @@ public class Usuario {
     }
 
     public Cargo getCargo() {
-        return cargo;
+        return this.cargo;
     }
 
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 
     @Override
@@ -109,30 +132,10 @@ public class Usuario {
             return false;
         }
         final Usuario other = (Usuario) obj;
-        /*
-         if (!Objects.equals(this.nome, other.nome)) {
-         return false;
-         }
-         if (!Objects.equals(this.cpf, other.cpf)) {
-         return false;
-         }
-         */
-//        if (!Objects.equals(this.usuarioSistema, other.usuarioSistema)) {
-//            return false;
-//        }
-//
-//        if (!Objects.equals(this.senha, other.senha)) {
-//            return false;
-//        }
-
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
-    }
-
-    public int GenerateNewId() {
-        return ++idGenerated;
     }
 
     @Override

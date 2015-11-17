@@ -6,8 +6,9 @@
 package bean;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -63,7 +64,7 @@ public class UsuarioMB {
         this.dataTableUsuarios = dataTableUsuarios;
     }
 
-    public ArrayList<Usuario> getArrayListUsuarios() throws Exception {
+    public List<Usuario> getArrayListUsuarios() throws Exception {
         return (new dao.UsuarioDao()).getArrayListUsuarios();
     }
 
@@ -80,14 +81,14 @@ public class UsuarioMB {
         SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
 
         try {
-            if (sessaoSistemaMB.getUsuario().getId() == this.usuario.getId()) {
+            if (Objects.equals(sessaoSistemaMB.getUsuario().getId(), this.usuario.getId())) {
                 util.Util.FacesContextAddMessage(
                         FacesMessage.SEVERITY_WARN,
                         "Não é possível excluir o seu usuário!",
                         "",
                         "mensagemUsuarios");
             } else {
-                int intRetorno = (new dao.UsuarioDao()).excluir(this.usuario);
+                boolean blnRetorno = (new dao.UsuarioDao()).remover(this.usuario);
                 util.Util.FacesContextAddMessage(
                         FacesMessage.SEVERITY_INFO,
                         "Usuário removido!",
@@ -157,9 +158,19 @@ public class UsuarioMB {
 
             }
 
-            //objeto enviado via post
-            (new dao.UsuarioDao()).editar(usuario);
+            //Compatibilidade JPA:
+            //Buscar a senha para salvar o usuário no banco
+            objUsuario = (new dao.UsuarioDao()).buscarPorId(this.usuario.getId());
+            this.usuario.setSenha(objUsuario.getSenha());
 
+            //objeto enviado via post
+            (new dao.UsuarioDao()).salvar(this.usuario);
+
+            //Para fins de segurança, seta novamente a senha do usuário no Bean para NULL
+            this.usuario.setSenha(null);
+
+            this.AtualizarUsuarioSistema();
+            
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_INFO,
                     "Usuário [" + this.usuario.toString() + "] editado!",
@@ -192,7 +203,7 @@ public class UsuarioMB {
             }
 
             //Verifica se o cpf foi cadastrado para outro usuário
-            Usuario objUsuario = (new dao.UsuarioDao()).buscarPorCpf(usuario.getCpf(), -1);
+            Usuario objUsuario = (new dao.UsuarioDao()).buscarPorCpf(usuario.getCpf(), -1L);
 
             if (objUsuario != null) {
                 if (usuario.getCpf().trim().equals(objUsuario.getCpf())) {
@@ -206,7 +217,7 @@ public class UsuarioMB {
             }
 
             //Verifica se o nome foi cadastrado para outro usuário
-            objUsuario = (new dao.UsuarioDao()).buscarPorNome(usuario.getNome().trim(), -1);
+            objUsuario = (new dao.UsuarioDao()).buscarPorNome(usuario.getNome().trim(), -1L);
 
             if (objUsuario != null) {
 
@@ -220,7 +231,7 @@ public class UsuarioMB {
             }
 
             //Verifica se o usuario de sistema foi cadastrado para outro usuário
-            objUsuario = (new dao.UsuarioDao()).buscarPorUsuarioSistema(usuario.getUsuarioSistema().trim(), -1);
+            objUsuario = (new dao.UsuarioDao()).buscarPorUsuarioSistema(usuario.getUsuarioSistema().trim(), -1L);
 
             if (objUsuario != null) {
 
@@ -234,7 +245,7 @@ public class UsuarioMB {
             }
 
             //objeto enviado via post
-            (new dao.UsuarioDao()).inserir(usuario);
+            (new dao.UsuarioDao()).salvar(usuario);
 
             util.Util.FacesContextAddMessage(
                     FacesMessage.SEVERITY_INFO,
@@ -296,5 +307,13 @@ public class UsuarioMB {
             Logger.getLogger(UsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return cargo;
+    }
+
+    public void AtualizarUsuarioSistema() {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
+        if (Objects.equals(sessaoSistemaMB.getUsuario().getId(), this.usuario.getId())) {
+            sessaoSistemaMB.setUsuario(this.usuario);
+        }
     }
 }

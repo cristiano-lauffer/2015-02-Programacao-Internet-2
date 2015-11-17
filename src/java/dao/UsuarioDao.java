@@ -5,15 +5,13 @@
  */
 package dao;
 
-import banco.ConnectionFactory;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import model.Usuario;
+import util.JpaUtil;
 
 /**
  *
@@ -21,17 +19,53 @@ import model.Usuario;
  */
 public class UsuarioDao {
 
-    private Connection conexao;
-    private PreparedStatement comando;
+    public boolean salvar(Usuario usuario) throws Exception {
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            em.getTransaction().begin();
+            if (usuario.getId() == null) {
+                em.persist(usuario);
+            } else {
+                em.merge(usuario);
+            }
+            em.getTransaction().commit();
+            em.close();
 
-    private void conectar(String sql) throws ClassNotFoundException, SQLException {
-        conexao = ConnectionFactory.getConnection();
-        comando = conexao.prepareStatement(sql);
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
     }
 
-    private void fecharConexao() throws SQLException {
-        comando.close();
-        conexao.close();
+    public boolean remover(Usuario usuario) throws Exception {
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(usuario));
+            em.getTransaction().commit();
+            em.close();
+
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
+    }
+
+    public List<Usuario> getArrayListUsuarios() throws Exception {
+        List<Usuario> listaUsuarios;
+
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            listaUsuarios = em.createQuery("SELECT u FROM Usuario u").getResultList();
+            em.close();
+
+            return listaUsuarios;
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
     }
 
     /**
@@ -44,32 +78,27 @@ public class UsuarioDao {
      * @throws java.lang.Exception
      */
     public Usuario buscar(String usuarioSistema, String senha) throws Exception {
-        Usuario usuarioRetorno = null;
+        Usuario usuario = null;
 
         try {
-            String sql = "SELECT * FROM usuarios WHERE usuarioSistema=? AND senha=?";
-            conectar(sql);
-            comando.setString(1, usuarioSistema);
-            comando.setString(2, senha);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                usuarioRetorno = new Usuario(
-                        resultado.getInt("id"),
-                        resultado.getString("nome"),
-                        resultado.getString("cpf"),
-                        resultado.getString("usuariosistema"),
-                        resultado.getString("senha"),
-                        resultado.getBoolean("administrador")
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT u FROM Usuario u "
+                    + "WHERE u.usuarioSistema LIKE :usuarioSistema "
+                    + "AND u.senha LIKE :senha ");
+            query.setParameter("usuarioSistema", usuarioSistema);
+            query.setParameter("senha", senha);
+            List<Usuario> listaUsuarios = query.getResultList();
+
+            for (Usuario usuarioRes : listaUsuarios) {
+                usuario = usuarioRes;
+                break;
             }
-            fecharConexao();
 
-            return usuarioRetorno;
+            em.close();
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
+            return usuario;
+
+        } catch (Exception ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
@@ -84,33 +113,28 @@ public class UsuarioDao {
      * @return
      * @throws java.lang.Exception
      */
-    public Usuario buscarPorCpf(String cpf, int id) throws Exception {
-        Usuario usuarioRetorno = null;
+    public Usuario buscarPorCpf(String cpf, Long id) throws Exception {
+        Usuario usuario = null;
 
         try {
-            String sql = "SELECT * FROM usuarios WHERE cpf=? AND id<>?";
-            conectar(sql);
-            comando.setString(1, cpf);
-            comando.setInt(2, id);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                usuarioRetorno = new Usuario(
-                        resultado.getInt("id"),
-                        resultado.getString("nome"),
-                        resultado.getString("cpf"),
-                        resultado.getString("usuariosistema"),
-                        resultado.getString("senha"),
-                        resultado.getBoolean("administrador")
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT u FROM Usuario u "
+                    + "WHERE u.cpf LIKE :cpf "
+                    + "AND u.id <> :id ");
+            query.setParameter("cpf", cpf);
+            query.setParameter("id", id);
+            List<Usuario> listaUsuarios = query.getResultList();
+
+            for (Usuario usuarioRes : listaUsuarios) {
+                usuario = usuarioRes;
+                break;
             }
-            fecharConexao();
 
-            return usuarioRetorno;
+            em.close();
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
+            return usuario;
+
+        } catch (Exception ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
@@ -125,33 +149,28 @@ public class UsuarioDao {
      * @return
      * @throws java.lang.Exception
      */
-    public Usuario buscarPorNome(String nome, int id) throws Exception {
-        Usuario usuarioRetorno = null;
+    public Usuario buscarPorNome(String nome, Long id) throws Exception {
+        Usuario usuario = null;
 
         try {
-            String sql = "SELECT * FROM usuarios WHERE nome=? AND id<>?";
-            conectar(sql);
-            comando.setString(1, nome);
-            comando.setInt(2, id);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                usuarioRetorno = new Usuario(
-                        resultado.getInt("id"),
-                        resultado.getString("nome"),
-                        resultado.getString("cpf"),
-                        resultado.getString("usuariosistema"),
-                        resultado.getString("senha"),
-                        resultado.getBoolean("administrador")
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT u FROM Usuario u "
+                    + "WHERE u.nome LIKE :nome "
+                    + "AND u.id <> :id ");
+            query.setParameter("nome", nome);
+            query.setParameter("id", id);
+            List<Usuario> listaUsuarios = query.getResultList();
+
+            for (Usuario usuarioRes : listaUsuarios) {
+                usuario = usuarioRes;
+                break;
             }
-            fecharConexao();
 
-            return usuarioRetorno;
+            em.close();
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
+            return usuario;
+
+        } catch (Exception ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
@@ -166,160 +185,53 @@ public class UsuarioDao {
      * @return
      * @throws java.lang.Exception
      */
-    public Usuario buscarPorUsuarioSistema(String usuarioSistema, int id) throws Exception {
-        Usuario usuarioRetorno = null;
+    public Usuario buscarPorUsuarioSistema(String usuarioSistema, Long id) throws Exception {
+        Usuario usuario = null;
 
         try {
-            String sql = "SELECT * FROM usuarios WHERE usuarioSistema=? AND id<>?";
-            conectar(sql);
-            comando.setString(1, usuarioSistema);
-            comando.setInt(2, id);
-            ResultSet resultado = comando.executeQuery();
-            if (resultado.next()) {
-                usuarioRetorno = new Usuario(
-                        resultado.getInt("id"),
-                        resultado.getString("nome"),
-                        resultado.getString("cpf"),
-                        resultado.getString("usuariosistema"),
-                        resultado.getString("senha"),
-                        resultado.getBoolean("administrador")
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT u FROM Usuario u "
+                    + "WHERE u.usuarioSistema LIKE :usuarioSistema "
+                    + "AND u.id <> :id ");
+            query.setParameter("usuarioSistema", usuarioSistema);
+            query.setParameter("id", id);
+            List<Usuario> listaUsuarios = query.getResultList();
+
+            for (Usuario usuarioRes : listaUsuarios) {
+                usuario = usuarioRes;
+                break;
             }
-            fecharConexao();
 
-            return usuarioRetorno;
+            em.close();
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
+            return usuario;
+
+        } catch (Exception ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }
     }
 
-    /***
-     * 
-     * @return
-     * @throws Exception 
-     */
-    public ArrayList<Usuario> getArrayListUsuarios() throws Exception {
-        ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+    public Usuario buscarPorId(Long id) throws Exception {
+        Usuario usuario = null;
 
         try {
-            String sql = "SELECT * FROM usuarios ORDER BY 1ASC";
-            conectar(sql);
-            ResultSet resultado = comando.executeQuery();
-            while (resultado.next()) {
-                Usuario usuario = new Usuario(
-                        resultado.getInt("id"),
-                        resultado.getString("nome"),
-                        resultado.getString("cpf"),
-                        resultado.getString("usuariosistema"),
-                        resultado.getString("senha"),
-                        resultado.getBoolean("administrador"),
-                        (new CargoDao().buscar(resultado.getInt("id_cargo")))
-                );
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT u FROM Usuario u "
+                    + "WHERE u.id = :id ");
+            query.setParameter("id", id);
+            List<Usuario> listaUsuarios = query.getResultList();
 
-                listaUsuarios.add(usuario);
+            for (Usuario usuarioRes : listaUsuarios) {
+                usuario = usuarioRes;
+                break;
             }
-            fecharConexao();
 
-            return listaUsuarios;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        }
-    }
+            em.close();
 
-    /***
-     * 
-     * @param usuario
-     * @return
-     * @throws Exception 
-     */
-    public boolean inserir(Usuario usuario) throws Exception {
-        try {
-            String sql = "INSERT INTO usuarios (nome, cpf, usuarioSistema, senha, administrador, id_cargo) VALUES(?,?,?,?,?,?)";
-            conectar(sql);
-            comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            comando.setString(1, usuario.getNome());
-            comando.setString(2, usuario.getCpf());
-            comando.setString(3, usuario.getUsuarioSistema());
-            comando.setString(4, usuario.getSenha());
-            comando.setBoolean(5, usuario.isAdministrador());
-            comando.setLong(6, usuario.getCargo().getId());
-            comando.executeUpdate();
-            ResultSet resultado = comando.getGeneratedKeys();
-            if (resultado.next()) {
-                usuario.setId(resultado.getInt(1));
-            }
-            fecharConexao();
+            return usuario;
 
-            return true;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        }
-    }
-
-    /***
-     * 
-     * @param usuario
-     * @return
-     * @throws Exception 
-     */
-    public boolean editar(Usuario usuario) throws Exception {
-        try {
-            String sql = "UPDATE usuarios SET nome=?, cpf=?, usuarioSistema=?, administrador=?, id_cargo=? WHERE id=?";
-            conectar(sql);
-            comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            comando.setString(1, usuario.getNome());
-            comando.setString(2, usuario.getCpf());
-            comando.setString(3, usuario.getUsuarioSistema());
-            comando.setBoolean(4, usuario.isAdministrador());
-            comando.setLong(5, usuario.getCargo().getId());
-            comando.setInt(6, usuario.getId());
-            comando.executeUpdate();
-            fecharConexao();
-
-            return true;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        }
-    }
-
-    /**
-     * *
-     *
-     * @param usuario
-     * @return -1 se não foi possível excluir o usuário
-     * @throws java.lang.Exception
-     */
-    public int excluir(Usuario usuario) throws Exception {
-        try {
-            String sql = "DELETE FROM usuarios WHERE id=?";
-            conectar(sql);
-            comando.setInt(1, usuario.getId());
-            comando.executeUpdate();
-            int intAfectedRows = comando.getUpdateCount();
-            fecharConexao();
-
-            return intAfectedRows;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
             throw new Exception(ex);
         }

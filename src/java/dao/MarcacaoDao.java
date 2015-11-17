@@ -41,7 +41,7 @@ public class MarcacaoDao {
             comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             comando.setObject(1, marcacaoHorario.getDtMarcacao(), Types.TIMESTAMP);
             comando.setInt(2, marcacaoHorario.getIdTipo().getValue());
-            comando.setInt(3, marcacaoHorario.getUsuario().getId());
+            comando.setLong(3, marcacaoHorario.getUsuario().getId());
             comando.executeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
