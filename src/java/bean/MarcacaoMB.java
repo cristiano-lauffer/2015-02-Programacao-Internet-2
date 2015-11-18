@@ -27,8 +27,11 @@ public class MarcacaoMB {
      * Creates a new instance of MarcacaoMB
      */
     public MarcacaoMB() {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
+        
         try {
-            marcacao = (new dao.MarcacaoDao()).BuscarMarcacaoDataAtual();
+            marcacao = (new dao.MarcacaoDao()).BuscarMarcacaoDataAtual(sessaoSistemaMB.getUsuario());
         } catch (Exception e) {
             marcacao = new Marcacao();
             marcacao.setDtMarcacao(new Date());

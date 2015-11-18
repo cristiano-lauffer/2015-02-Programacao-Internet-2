@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import model.Marcacao;
+import model.Usuario;
 import util.JpaUtil;
 
 /**
@@ -58,8 +59,10 @@ public class MarcacaoDao {
         try {
             EntityManager em = JpaUtil.getEntityManager();
             Query query = em.createQuery("SELECT m FROM Marcacao m "
-                    + "WHERE m.dtMarcacao = :data ");
+                    + "WHERE m.dtMarcacao = :data "
+                    + "AND m.usuario = :usuario ");
             query.setParameter("data", marcacao.getDtMarcacao());
+            query.setParameter("usuario", marcacao.getUsuario());
             List<Marcacao> listaMarcacao = query.getResultList();
 
             for (Marcacao marcacaoRes : listaMarcacao) {
@@ -77,12 +80,14 @@ public class MarcacaoDao {
         }
     }
     
-    public Marcacao BuscarMarcacaoDataAtual() throws Exception {
+    public Marcacao BuscarMarcacaoDataAtual(Usuario usuario) throws Exception {
         try {
             EntityManager em = JpaUtil.getEntityManager();
             Query query = em.createQuery("SELECT m FROM Marcacao m "
-                    + "WHERE m.dtMarcacao = :data ");
+                    + "WHERE m.dtMarcacao = :data "
+                    + "AND m.usuario = :usuario ");
             query.setParameter("data", new Date());
+            query.setParameter("usuario", usuario);
             List<Marcacao> listaMarcacao = query.getResultList();
 
             for (Marcacao marcacaoRes : listaMarcacao) {
