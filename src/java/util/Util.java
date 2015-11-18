@@ -5,6 +5,7 @@
  */
 package util;
 
+import java.util.Date;
 import java.util.InputMismatchException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -23,7 +24,7 @@ public class Util {
                 detail);
         contexto.addMessage(clientId, mensagem);
     }
-    
+
     public static boolean isNumerico(String valor) {
         try {
             long parseLong = Long.parseLong(valor);
@@ -32,7 +33,7 @@ public class Util {
             return false;
         }
     }
-    
+
     public static boolean isDouble(String valor) {
         try {
             Double parseDouble = Double.parseDouble(valor);
@@ -41,7 +42,7 @@ public class Util {
             return false;
         }
     }
-    
+
     public static boolean isInt(String valor) {
         try {
             Integer parseInt = Integer.parseInt(valor);
@@ -127,5 +128,29 @@ public class Util {
         } catch (InputMismatchException erro) {
             return false;
         }
+    }
+
+    /**
+     * *
+     * Compara duas datas, verificando se a primeira data é maior que a segunda
+     * data.
+     *
+     * @param dataIni
+     * @param dataFim
+     * @return
+     */
+    public static boolean isDataMaior(Date dataIni, Date dataFim) {
+
+        if (dataIni == null || dataFim == null) {
+            return false;
+        }
+
+        if (dataIni.compareTo(dataFim) < 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+        //return dataIni.after(dataFim);
     }
 }

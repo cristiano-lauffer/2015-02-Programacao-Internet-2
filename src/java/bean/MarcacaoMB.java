@@ -29,7 +29,7 @@ public class MarcacaoMB {
     public MarcacaoMB() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
-        
+
         try {
             marcacao = (new dao.MarcacaoDao()).BuscarMarcacaoDataAtual(sessaoSistemaMB.getUsuario());
         } catch (Exception e) {
@@ -58,6 +58,16 @@ public class MarcacaoMB {
         try {
             //Atribui a marcação ao usuário corrente
             this.marcacao.setUsuario(sessaoSistemaMB.getUsuario());
+
+            //Verifica se a data de entrada é maior que a data de saída
+            if (util.Util.isDataMaior(this.marcacao.getDtEntrada(), this.marcacao.getDtSaida())) {
+                util.Util.FacesContextAddMessage(
+                        FacesMessage.SEVERITY_WARN,
+                        "Verifique o período marcado: a data de entrada não pode ser maior ou igual a data de saída!",
+                        "",
+                        "mensagemMarcacao");
+                return "/faces/sistema/marcacao";
+            }
 
             //objeto enviado via post
             (new dao.MarcacaoDao()).salvar(marcacao);
