@@ -58,7 +58,7 @@ public class UsuarioDao {
 
         try {
             EntityManager em = JpaUtil.getEntityManager();
-            listaUsuarios = em.createQuery("SELECT u FROM Usuario u").getResultList();
+            listaUsuarios = em.createQuery("SELECT u FROM Usuario u ORDER BY u.id").getResultList();
             em.close();
 
             return listaUsuarios;

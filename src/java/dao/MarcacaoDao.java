@@ -5,15 +5,14 @@
  */
 package dao;
 
-import banco.ConnectionFactory;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.MarcacaoHorario;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import model.Marcacao;
+import util.JpaUtil;
 
 /**
  *
@@ -21,41 +20,86 @@ import model.MarcacaoHorario;
  */
 public class MarcacaoDao {
 
-    private Connection conexao;
-    private PreparedStatement comando;
-
-    private void conectar(String sql) throws ClassNotFoundException, SQLException {
-        conexao = ConnectionFactory.getConnection();
-        comando = conexao.prepareStatement(sql);
-    }
-
-    private void fecharConexao() throws SQLException {
-        comando.close();
-        conexao.close();
-    }
-
-    public boolean inserir(MarcacaoHorario marcacaoHorario) {
+    public boolean salvar(Marcacao marcacao) throws Exception {
         try {
-            String sql = "INSERT INTO marcacoes_horarios (dt_marcacao, id_tipo_marcacao, id_usuario) VALUES (?,?,?)";
-            conectar(sql);
-            comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            comando.setObject(1, marcacaoHorario.getDtMarcacao(), Types.TIMESTAMP);
-            comando.setInt(2, marcacaoHorario.getIdTipo().getValue());
-            comando.setLong(3, marcacaoHorario.getUsuario().getId());
-            comando.executeUpdate();
-            ResultSet resultado = comando.getGeneratedKeys();
-            if (resultado.next()) {
-                //registroHorario.setDtRegistro((Date)resultado.getObject(1, Types.TIMESTAMP));
+            EntityManager em = JpaUtil.getEntityManager();
+            em.getTransaction().begin();
+            if (this.ExisteMarcacao(marcacao)) {
+                em.merge(marcacao);
+            } else {
+                em.persist(marcacao);
             }
-            fecharConexao();
+            em.getTransaction().commit();
+            em.close();
 
             return true;
-        } catch (ClassNotFoundException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(MarcacaoDao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(MarcacaoDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
         }
-        return false;
+    }
+
+    public boolean remover(Marcacao marcacao) throws Exception {
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(marcacao));
+            em.getTransaction().commit();
+            em.close();
+
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(MarcacaoDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
+    }
+
+    public boolean ExisteMarcacao(Marcacao marcacao) throws Exception {
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT m FROM Marcacao m "
+                    + "WHERE m.dtMarcacao = :data ");
+            query.setParameter("data", marcacao.getDtMarcacao());
+            List<Marcacao> listaMarcacao = query.getResultList();
+
+            for (Marcacao marcacaoRes : listaMarcacao) {
+                em.close();
+                return true;
+            }
+
+            em.close();
+
+            return false;
+
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
+    }
+    
+    public Marcacao BuscarMarcacaoDataAtual() throws Exception {
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT m FROM Marcacao m "
+                    + "WHERE m.dtMarcacao = :data ");
+            query.setParameter("data", new Date());
+            List<Marcacao> listaMarcacao = query.getResultList();
+
+            for (Marcacao marcacaoRes : listaMarcacao) {
+                em.close();
+                return marcacaoRes;
+            }
+
+            em.close();
+
+            Marcacao objMarcacao = new Marcacao();
+            objMarcacao.setDtMarcacao(new Date());
+            return objMarcacao;
+
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
     }
 
 }
