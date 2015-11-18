@@ -35,7 +35,7 @@
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
                                 <div class="col-sm-9">
-                                    <h:outputLabel value="Hora entrada" for="entrada" />
+                                    <h:outputLabel value="Hora entrada (hh:mm - [Exemplo - 08:30])" for="entrada" />
                                     <h:inputText id="entrada" value="#{marcacaoMB.marcacao.dtEntrada}" class="form-control">
                                         <f:convertDateTime type="time" pattern="HH:mm" /> 
                                     </h:inputText>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="form-group col-sm-10 col-sm-offset-2">
                                 <div class="col-sm-9">
-                                    <h:outputLabel value="Hora saída" for="saida" />
+                                    <h:outputLabel value="Hora saída (hh:mm - [Exemplo - 18:00])" for="saida" />
                                     <h:inputText id="saida" value="#{marcacaoMB.marcacao.dtSaida}" class="form-control">
                                         <f:convertDateTime type="time" pattern="HH:mm" /> 
                                     </h:inputText>
