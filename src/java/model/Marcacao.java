@@ -106,4 +106,7 @@ public class Marcacao implements Serializable {
         return (new SimpleDateFormat("dd/MM/yyyy").format(this.dtMarcacao));
     }
 
+    public Date getHoraDia() {
+        return util.Util.dateDiff_Hour(this.dtEntrada, this.dtSaida);
+    }
 }

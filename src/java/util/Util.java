@@ -5,6 +5,7 @@
  */
 package util;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 import javax.faces.application.FacesMessage;
@@ -152,5 +153,33 @@ public class Util {
         }
 
         //return dataIni.after(dataFim);
+    }
+    
+    /**
+     * Compara a hora em duas datas. Retorna null caso qualquer uma das datas seja nula.
+     * @param dtInicio
+     * @param dtFim
+     * @return 
+     */
+    public static Date dateDiff_Hour(Date dtInicio, Date dtFim){
+        Date data;
+        if (dtInicio == null || dtFim == null) {
+            return null;
+        } else {
+            Calendar calIni = Calendar.getInstance();
+            Calendar calFim = Calendar.getInstance();
+
+            calIni.setTimeInMillis(dtInicio.getTime());
+            calFim.setTimeInMillis(dtFim.getTime());
+
+            Calendar calDiff = Calendar.getInstance();
+
+            calDiff.set(Calendar.HOUR_OF_DAY, calFim.get(Calendar.HOUR_OF_DAY) - calIni.get(Calendar.HOUR_OF_DAY));
+            calDiff.set(Calendar.MINUTE, calFim.get(Calendar.MINUTE) - calIni.get(Calendar.MINUTE));
+
+            data = calDiff.getTime();
+
+            return data;
+        }
     }
 }

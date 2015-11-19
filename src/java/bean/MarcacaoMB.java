@@ -6,9 +6,11 @@
 package bean;
 
 import java.util.Date;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import model.Marcacao;
@@ -22,6 +24,7 @@ import model.Marcacao;
 public class MarcacaoMB {
 
     private Marcacao marcacao;
+    private HtmlDataTable dataTableMarcacoes;
 
     /**
      * Creates a new instance of MarcacaoMB
@@ -49,6 +52,21 @@ public class MarcacaoMB {
 
     public void setMarcacao(Marcacao marcacao) {
         this.marcacao = marcacao;
+    }
+    
+    public HtmlDataTable getDataTableMarcacoes() {
+        return dataTableMarcacoes;
+    }
+
+    public void setDataTableMarcacoes(HtmlDataTable dataTableMarcacoes) {
+        this.dataTableMarcacoes = dataTableMarcacoes;
+    }
+    
+    public List<Marcacao> getArrayList() throws Exception {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        SessaoSistemaMB sessaoSistemaMB = (SessaoSistemaMB) req.getSession().getAttribute("sessaoSistemaMB");
+        
+        return (new dao.MarcacaoDao()).getArrayList(sessaoSistemaMB.getUsuario());
     }
 
     public String salvar() {

@@ -107,4 +107,20 @@ public class MarcacaoDao {
         }
     }
 
+    public List<Marcacao> getArrayList(Usuario usuario) throws Exception {
+        List<Marcacao> listaMarcacao;
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            Query query = em.createQuery("SELECT m FROM Marcacao m "
+                    + "WHERE m.usuario = :usuario ");
+            query.setParameter("usuario", usuario);
+            listaMarcacao = query.getResultList();
+
+            return listaMarcacao;
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
+    }
+
 }
