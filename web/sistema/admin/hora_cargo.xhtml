@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <body>
+
+        <ui:composition template="./../../templates/masterFooter.xhtml">
+
+            <ui:define name="title"> - Horas Trabalhadas por Cargo</ui:define>
+
+            <ui:define name="head"></ui:define>
+
+            <ui:define name="content">
+                <!--<div class="col-sm-1"></div>-->
+                <h:form class="col-sm-12">
+                    <nav class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navMenu" aria-expanded="false">
+                                    <span class="sr-only">Toggle</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#">Horas Trabalhadas por Cargo</a>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="panel panel-default">
+                        <!--<div class="panel-body">-->
+                        <h:dataTable id="dtbUsuarios" value="#{cargoMB.arrayListSum}" var="object" class="table table-condensed table-hover">
+
+                            <h:column>
+                                <f:facet name="header">Cargo</f:facet>
+                                <h:outputText id="data" value="#{object[0]}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Total de horas</f:facet>
+                                <h:outputText id="dataEntrada"  value="#{object[1]}" />
+                            </h:column>
+
+                        </h:dataTable>
+                        <!--</div>-->
+                    </div>
+                </h:form>
+                <!--<div class="col-sm-1"></div>-->
+            </ui:define>
+
+            <ui:define name="ModalTitle">Usuários</ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

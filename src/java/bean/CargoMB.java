@@ -59,6 +59,10 @@ public class CargoMB {
     public List<Cargo> getArrayList() throws Exception {
         return (new dao.CargoDao()).getArrayListCargos();
     }
+    
+    public List<Object[]> getArrayListSum() throws Exception {
+        return (new dao.CargoDao()).getArrayListCargosSum();
+    }
 
     public void remover() {
         try {

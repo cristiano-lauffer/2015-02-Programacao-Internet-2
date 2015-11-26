@@ -5,12 +5,14 @@
  */
 package dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Cargo;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
+import model.Cargo;
 import util.JpaUtil;
 
 /**
@@ -59,6 +61,41 @@ public class CargoDao {
         try {
             EntityManager em = JpaUtil.getEntityManager();
             listaCargos = em.createQuery("SELECT c FROM Cargo c").getResultList();
+            em.close();
+
+            return listaCargos;
+        } catch (Exception ex) {
+            Logger.getLogger(CargoDao.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception(ex);
+        }
+    }
+
+    public List<Object[]> getArrayListCargosSum() throws Exception {
+        List<Object[]> listaCargos;
+
+        try {
+            EntityManager em = JpaUtil.getEntityManager();
+            //Query query = em.createQuery("SELECT c, _c FROM Marcacao m "//);
+//            TypedQuery<Object[]> query = em.createQuery("SELECT c.nome, SUM(HOUR(m.dtSaida)) FROM Cargo c "//);
+//                    + "INNER JOIN Usuario u INNER JOIN Marcacao m "//);
+//                    + "WHERE "//);
+//                    + "m.dtEntrada IS NOT NULL AND m.dtSaida IS NOT NULL "//);
+//                    + "GROUP BY c.nome ", Object[].class);
+            TypedQuery<Object[]> query = em.createQuery(
+                    "SELECT "
+                    + "c.nome, "
+                    + "SUM((m.dtSaida)) "
+                    //+ "CURRENT_TIME() "
+                    //+ "FUNC('TIME_TO_SEC, m.dtSaida) "
+                    //+ "SUM(m.dtSaida) "
+                    + "FROM Marcacao m "
+                    + "JOIN m.usuario u "
+                    + "JOIN u.cargo c "
+                    + "GROUP BY c.nome ",
+                    Object[].class);
+            listaCargos = query.getResultList();
+
+            //
             em.close();
 
             return listaCargos;
