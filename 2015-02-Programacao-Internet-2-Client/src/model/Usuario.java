@@ -7,40 +7,36 @@ package model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Cristiano
  */
-@Entity
 @XmlRootElement
 public class Usuario implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(length = 100, nullable = false)
-    private String nome;
-    @Column(length = 11, nullable = false)
-    private String cpf;
-    @Column(length = 100, nullable = false)
-    private String usuarioSistema;
-    @Column(length = 100, nullable = false)
-    private String senha;
-    @Column(nullable = false)
     private boolean administrador;
-    @ManyToOne(optional = false)
     private Cargo cargo;
+    private String cpf;
+    private Long id;
+    private String nome;
+    private String senha;
+    private String usuarioSistema;    
+    
+    //private String administrador;
+
+//    public String getAdministrador() {
+//        return administrador;
+//    }
+//
+//    public void setAdministrador(String administrador) {
+//        this.administrador = administrador;
+//    }
+    
 
     public Usuario(Long id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador) {
+    //public Usuario(Long id, String nome, String cpf, String usuarioSistema, String senha, String administrador) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -50,6 +46,7 @@ public class Usuario implements Serializable {
     }
 
     public Usuario(Long id, String nome, String cpf, String usuarioSistema, String senha, boolean administrador, Cargo cargo) {
+    //public Usuario(Long id, String nome, String cpf, String usuarioSistema, String senha, String administrador, Cargo cargo) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -65,6 +62,7 @@ public class Usuario implements Serializable {
     }
 
     public Usuario() {
+        
     }
 
     public Long getId() {

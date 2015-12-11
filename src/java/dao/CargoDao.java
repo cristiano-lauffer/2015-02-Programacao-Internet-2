@@ -83,20 +83,26 @@ public class CargoDao {
 //                    + "GROUP BY c.nome ", Object[].class);
             TypedQuery<Object[]> query = em.createQuery(
                     "SELECT "
-                    + "c.nome, "
-                    + "SUM((m.dtSaida)) "
+                    //+ "c.nome, "
+                    + "SUM(m.dtSaida) "
+                    //+ "CURRENT_TIME "
                     //+ "CURRENT_TIME() "
                     //+ "FUNC('TIME_TO_SEC, m.dtSaida) "
                     //+ "SUM(m.dtSaida) "
                     + "FROM Marcacao m "
                     + "JOIN m.usuario u "
-                    + "JOIN u.cargo c "
-                    + "GROUP BY c.nome ",
+                    + "JOIN u.cargo c ",
+                    //+ "GROUP BY c.nome ",
                     Object[].class);
             listaCargos = query.getResultList();
 
             //
             em.close();
+            
+            for (Object object : listaCargos) {
+                int i = 1;
+                java.sql.Timestamp teste = (java.sql.Timestamp)object;
+            }
 
             return listaCargos;
         } catch (Exception ex) {
